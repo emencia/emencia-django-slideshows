@@ -22,7 +22,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     install_requires=[
-        'sorl-thumbnail==11.12'
+        'sorl-thumbnail==11.12',
         'django-tinymce==1.5.1'
     ],
     include_package_data=True,
