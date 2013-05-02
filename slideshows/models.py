@@ -12,7 +12,7 @@ from tinymce import models as tinymce_models
 
 from .utils import content_file_name
 
-IMAGE_FILE_UPLOADTO = lambda x,y: content_file_name('sliders/slides/%Y/%m/%d', x, y)
+IMAGE_FILE_UPLOADTO = lambda x,y: content_file_name('slideshows/slides/%Y/%m/%d', x, y)
 
 class Slideshow(models.Model):
     """
@@ -20,6 +20,17 @@ class Slideshow(models.Model):
     """
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
+    slug = models.SlugField(_('slug'), unique=True, max_length=75)
+
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        # First create
+        if not self.created:
+            self.created = datetime.datetime.now()
+        
+        super(Slideshow, self).save(*args, **kwargs)
 
 class Slide(models.Model):
     """

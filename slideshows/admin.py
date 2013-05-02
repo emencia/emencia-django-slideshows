@@ -23,12 +23,14 @@ class SlideshowAdmin(admin.ModelAdmin):
     ordering = ('title',)
     search_fields = ('title',)
     list_filter = ('created',)
+    prepopulated_fields = {"slug": ("title",)}
+    list_display = ('slug', 'title', 'created')
 
 class SlideAdmin(admin.ModelAdmin):
     ordering = ('priority',)
     search_fields = ('title', 'content')
-    list_filter = ('created',)
-    list_display = (admin_image, 'title', 'priority', 'created')
+    list_filter = ('created', 'slideshow')
+    list_display = (admin_image, 'title', 'slideshow', 'priority', 'created')
 
 admin.site.register(Slideshow, SlideshowAdmin)
 admin.site.register(Slide, SlideAdmin)
