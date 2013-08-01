@@ -10,7 +10,7 @@ Require
 =======
 
 * ``sorl-thumbnail``;
-* ``django-tinymce`` to easier content edit;
+* ``djangocms_text_ckeditor`` to easier content edit;
 
 Install
 =======
