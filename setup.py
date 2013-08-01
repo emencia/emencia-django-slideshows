@@ -23,7 +23,7 @@ setup(
     ],
     install_requires=[
         'sorl-thumbnail==11.12',
-        'django-tinymce'
+        'djangocms_text_ckeditor'
     ],
     include_package_data=True,
     zip_safe=False

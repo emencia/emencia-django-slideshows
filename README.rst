@@ -12,6 +12,17 @@ Require
 * ``sorl-thumbnail``;
 * ``django-tinymce`` to easier content edit;
 
+Install
+=======
+
+Add it to your installed apps in the settings : ::
+
+    INSTALLED_APPS = (
+        ...
+        'slideshows',
+        ...
+    )
+
 Usage
 =====
 

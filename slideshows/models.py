@@ -8,7 +8,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
-from tinymce import models as tinymce_models
+from djangocms_text_ckeditor.fields import HTMLField
 
 from .utils import content_file_name
 
@@ -40,7 +40,7 @@ class Slide(models.Model):
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Set this value to 0 will hide the item'))
-    content = tinymce_models.HTMLField(_("content"), blank=False)
+    content = HTMLField(_("content"), blank=False)
     image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=False)
 
     def __unicode__(self):
