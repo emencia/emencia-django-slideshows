@@ -23,6 +23,8 @@ Add it to your installed apps in the settings : ::
         ...
     )
 
+If DjangoCMS is installed (this should be as ``djangocms_text_ckeditor`` require it), a plugin will be available to use slideshows in your pages.
+
 Usage
 =====
 
@@ -31,3 +33,5 @@ Create your slideshow from the admin then use it in your templates : ::
     {% load slideshows_tags %}
     ...
     {% slideshow_render slug='your-slug' %}
+
+Or use it in your page as a content plugin.
