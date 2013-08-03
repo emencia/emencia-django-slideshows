@@ -30,7 +30,22 @@ class SlideAdmin(admin.ModelAdmin):
     ordering = ('priority',)
     search_fields = ('title', 'content')
     list_filter = ('created', 'slideshow')
-    list_display = (admin_image, 'title', 'slideshow', 'priority', 'created')
+    list_display = (admin_image, 'title', 'slideshow', 'priority', 'publish', 'created')
+    list_editable = ('priority', 'publish',)
+    fieldsets = (
+        (None, {
+            'fields': ('slideshow',),
+        }),
+        (None, {
+            'fields': ('title', 'priority', 'publish')
+        }),
+        (None, {
+            'fields': ('image',)
+        }),
+        (None, {
+            'fields': ('content',),
+        }),
+    )
 
 admin.site.register(Slideshow, SlideshowAdmin)
 admin.site.register(Slide, SlideAdmin)

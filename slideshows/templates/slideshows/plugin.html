@@ -1,0 +1,11 @@
+<div id="slides-container" class="row row-fluid">
+{% for slide in instance.slideshow.get_published_slides %}
+    <div class="item-{{ forloop.counter }} slide-item" style="background-image: url('{{ slide.image.url }}');" data-slide-title="{{ slide.title }}">
+        <div class="row content">
+            <div class="six columns well-box">
+            {{ slide.content|safe }}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>

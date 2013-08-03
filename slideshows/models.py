@@ -14,6 +14,11 @@ from .utils import content_file_name
 
 IMAGE_FILE_UPLOADTO = lambda x,y: content_file_name('slideshows/slides/%Y/%m/%d', x, y)
 
+PUBLISHED_CHOICES = (
+    (True, _('Published')),
+    (False, _('Unpublished')),
+)
+
 class Slideshow(models.Model):
     """
     Slideshow that contains slides
@@ -24,6 +29,9 @@ class Slideshow(models.Model):
 
     def __unicode__(self):
         return self.title
+    
+    def get_published_slides(self):
+        return self.slide_set.filter(publish=True)
 
     def save(self, *args, **kwargs):
         # First create
@@ -40,6 +48,7 @@ class Slide(models.Model):
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Set this value to 0 will hide the item'))
+    publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True)
     content = HTMLField(_("content"), blank=False)
     image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=False)
 
@@ -67,3 +76,15 @@ class Slide(models.Model):
     class Meta:
         verbose_name = _("Slide")
         verbose_name_plural = _("Slides")
+        ordering = ('priority',)
+
+try:
+    from cms.models import CMSPlugin
+except ImportError:
+    pass
+else:
+    class SlideshowPlugin(CMSPlugin):
+        slideshow = models.ForeignKey('slideshows.Slideshow', related_name='plugins')
+
+        def __unicode__(self):
+            return self.slideshow.title
