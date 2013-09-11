@@ -1,6 +1,6 @@
 <div id="slides-container" class="row row-fluid">
 {% for slide in slides %}
-    <div class="item-{{ forloop.counter }} slide-item" style="background-image: url('{{ slide.image.url }}');" data-slide-title="{{ slide.title }}">
+    <div class="item-{{ forloop.counter }} slide-item" style="background-image: url('{{ slide.image.url }}');" data-slide-title="{{ slide.title }}" data-slide-url="{{ slide.url }}">
         <div class="row content">
             <div class="six columns well-box">
             {{ slide.content|safe }}

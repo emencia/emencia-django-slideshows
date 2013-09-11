@@ -47,10 +47,11 @@ class Slide(models.Model):
     slideshow = models.ForeignKey(Slideshow, verbose_name=_('slideshow'), blank=False)
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
-    priority = models.IntegerField(_('display priority'), default=100, help_text=_('Set this value to 0 will hide the item'))
-    publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True)
-    content = HTMLField(_("content"), blank=False)
-    image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=False)
+    priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
+    publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
+    content = HTMLField(_("content"), blank=True)
+    image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=True)
+    url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
 
     def __unicode__(self):
         return self.title

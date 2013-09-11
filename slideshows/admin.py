@@ -43,6 +43,9 @@ class SlideAdmin(admin.ModelAdmin):
             'fields': ('image',)
         }),
         (None, {
+            'fields': ('url',)
+        }),
+        (None, {
             'fields': ('content',),
         }),
     )
