@@ -23,7 +23,6 @@ setup(
     ],
     install_requires=[
         'sorl-thumbnail==11.12',
-        'south<2.0'
         'djangocms_text_ckeditor'
     ],
     include_package_data=True,

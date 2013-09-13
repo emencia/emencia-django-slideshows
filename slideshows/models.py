@@ -4,6 +4,7 @@ Modèles de données
 """
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
@@ -26,6 +27,8 @@ class Slideshow(models.Model):
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
+    template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=settings.SLIDESHOWS_TEMPLATES[0][0], max_length=100, blank=False)
+    config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default="", max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
 
     def __unicode__(self):
         return self.title

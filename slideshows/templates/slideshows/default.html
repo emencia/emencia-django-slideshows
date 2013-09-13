@@ -1,0 +1,14 @@
+<h3>{{ slideshow_instance.title }}</h3>
+
+<div id="slides-container">
+{% for slide in slideshow_slides %}
+    <div class="item-{{ forloop.counter }} slide-item" style="background-image: url('{{ slide.image.url }}');" data-slide-title="{{ slide.title }}"{% if slide.url %} data-slide-url="{{ slide.url }}"{% endif %}>
+        <div class="row content">
+            {% if slide.content %}<div class="six columns well-box">
+            {{ slide.content|safe }}
+            </div>{% endif %}
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% if slideshow_js_config %}{{ slideshow_js_config }}{% endif %}

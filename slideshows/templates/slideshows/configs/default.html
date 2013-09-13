@@ -1,0 +1,22 @@
+<script type="text/javascript">
+//<![CDATA[
+$(window).load(function () {
+    $('#slides-container .slide-item').each(function(){
+        console.log($(this));
+        if( $(this).attr('data-slide-url') ){
+            $(this).addClass("clickable");
+            $(this).click(function(){
+                window.location.href = $(this).attr('data-slide-url');
+                return false;
+            })
+        }
+    });
+    // Orbit slides
+    $('#slides-container').orbit({ 
+        fluid: '16x9',
+        pauseOnHover:true,
+        startClockOnMouseOut:true
+    });
+});
+//]]>
+</script>
