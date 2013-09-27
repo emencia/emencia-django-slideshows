@@ -50,7 +50,7 @@ Then add the following settings : ::
 
 You can fill entries with your custom templates if needed.
 
-And finally add the new models to your database :
+And finally add the new models to your database : ::
 
     ./manage.py syncdb
 
@@ -59,7 +59,7 @@ If DjangoCMS is installed (this should be as `djangocms_text_ckeditor`_ require 
 Update
 ======
 
-If you have installed `South`_, after updating an existing install to a major new version you can automatically update your database :
+If you have installed `South`_, after updating an existing install to a major new version you can automatically update your database : ::
 
     ./manage.py migrate slideshows
 
@@ -87,7 +87,7 @@ Also you can override the content template and the config template saved within 
 
 (Use ``'None'`` as the second argument if you just want to override the config template).
 
-Note that if you the given Slideshow slug does not exist, this will raise a Http404.
+Note that if the given Slideshow slug does not exist, this will raise a Http404.
 
 With the cms plugin
 *******************
@@ -110,4 +110,4 @@ Slideshow config templates will have the following context variables :
 * slideshow_instance : the Slideshow model instance;
 * slideshow_slides : a queryset of published slides for the Slideshow instance;
 
-This available for the template tag and the cms plugin.
+This is available for the template tag and the cms plugin.

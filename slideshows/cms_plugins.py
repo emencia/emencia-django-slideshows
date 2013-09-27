@@ -38,6 +38,7 @@ class SlideshowPlugin(CMSPluginBase):
         return content
 
     def render(self, context, instance, placeholder):
+        self.render_template = instance.slideshow.template
         js_config = self.get_config_render(context, instance.slideshow)
         
         context.update({
