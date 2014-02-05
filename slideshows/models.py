@@ -88,7 +88,13 @@ except ImportError:
     pass
 else:
     class SlideshowPlugin(CMSPlugin):
-        slideshow = models.ForeignKey('slideshows.Slideshow', related_name='plugins')
+        slideshow = models.ForeignKey('slideshows.Slideshow')
+
+        def __unicode__(self):
+            return self.slideshow.title
+
+    class SlideshowRandomImagePlugin(CMSPlugin):
+        slideshow = models.ForeignKey('slideshows.Slideshow')
 
         def __unicode__(self):
             return self.slideshow.title
