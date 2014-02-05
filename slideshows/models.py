@@ -35,6 +35,10 @@ class Slideshow(models.Model):
     
     def get_published_slides(self):
         return self.slide_set.filter(publish=True)
+    
+    def count_published_slides(self):
+        return self.get_published_slides().count()
+    count_published_slides.short_description = _('Published slides')
 
     def save(self, *args, **kwargs):
         # First create

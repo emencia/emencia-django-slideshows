@@ -19,15 +19,31 @@ def admin_image(obj):
 admin_image.short_description = _('image')
 admin_image.allow_tags = True
 
+class SlideInline(admin.StackedInline):
+    model = Slide
+    
 class SlideshowAdmin(admin.ModelAdmin):
     ordering = ('title',)
     search_fields = ('title',)
     list_filter = ('created',)
     prepopulated_fields = {"slug": ("title",)}
-    list_display = ('slug', 'title', 'created')
-
+    list_display = ('slug', 'title', 'count_published_slides', 'created')
+    fieldsets = (
+        (None, {
+            'classes': ['wide',],
+            'fields': ('title','slug'),
+        }),
+        (_('Templates'), {
+            'classes': ['wide',],
+            'fields': ('template', 'config')
+        }),
+    )
+    inlines = [
+        SlideInline,
+    ]
+    
 class SlideAdmin(admin.ModelAdmin):
-    ordering = ('priority',)
+    ordering = ('slideshow__slug', 'priority',)
     search_fields = ('title', 'content')
     list_filter = ('created', 'slideshow')
     list_display = (admin_image, 'title', 'slideshow', 'priority', 'publish', 'created')
