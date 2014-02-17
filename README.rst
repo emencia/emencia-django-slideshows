@@ -2,17 +2,15 @@
 .. _South: http://south.readthedocs.org/en/latest/
 .. _sorl-thumbnail: https://github.com/sorl/sorl-thumbnail
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
-.. _Orbit Foundation 3: http://foundation.zurb.com/old-docs/f3/orbit.php
 
-A Django application to make slideshows.
+Introduction
+============
 
-Very simple, you can have multiple Slideshows, and each of them have their own slides. Slides can be ordered and they contains a title, an optional content text, an optional URL and an image.
+Very simple, you can have multiple Slideshows and each of them have their own slides. Slides can be ordered and they contains a title, an optional content text, an optional URL and an optional image.
 
-Slideshows can use custom templates and can use a custom config templates. Config templates are used to contains some Javascript to configure/initialize your slideshow with your slider library. By default, a Slideshow item have no config template, this is optional.
+Slideshows can use custom templates and custom config templates. Config templates are used to contains some Javascript to configure/initialize your slideshow with your slider library. But by default a Slideshow item have no config template, this is optional.
 
-There is no dedicated view to display them, only a template tag to use in your templates or plugins to use with `django-cms`_.
-
-Although it has been developed for `Orbit Foundation 3`_ slider, it does not contains any assets to integrate it in your site, this is at your responsability to integrate it (add your assets where your need, customise the template, etc..).
+It does not contains any assets to integrate it in your site, this is at your responsability to integrate it (choose and install your slider library, add your assets where you need, customise the template, etc..).
 
 Require
 =======
@@ -48,6 +46,20 @@ Then add the following settings : ::
         ("slideshows/slides_show/configs/default.html", "Default config"),
     )
 
+    # Available templates for "random slide" mode
+    SLIDESHOWS_RANDOM_SLIDE_TEMPLATES = (
+        ("slideshows/random_slide/default.html", "Random image default"),
+    )
+
+    # Default templates to use in admin forms
+    DEFAULT_SLIDESHOWS_TEMPLATE = SLIDESHOWS_TEMPLATES[0][0]
+    DEFAULT_SLIDESHOWS_CONFIG = ""
+    DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = SLIDESHOWS_RANDOM_SLIDE_TEMPLATES[0][0]
+
+And if you want to use the views add this to your main ``urls.py`` : ::
+
+    url(r'^slideshows/', include('slideshows.urls', namespace='slideshows')),
+
 You can fill entries with your custom templates if needed.
 
 And finally add the new models to your database : ::
@@ -67,6 +79,8 @@ Usage
 =====
 
 Either with the template tag or the cms plugin, the process to build the HTML will be to generate the optional config HTML if any, then generate the content HTML (where the config HTML would be avalaible as a context variable).
+
+The common way is to display a Slideshow with all its slides, this is called the **Slides show**. And there is an *extra mode* called **Random slide** which only a display a single slide take randomly from the published slides of a Slideshow.
 
 With the template tag
 *********************
@@ -97,20 +111,28 @@ Just go to the pages admin, and use the plugin you want in a placeholder content
 There is actually two plugins :
 
 * **Slides show** : the default one to display your slides in a slideshow, it use the template defined in the slideshow object (or the default template if empty);
-* **Random single slide** : to display only one random slide, it will never use the template defined in the slideshow object, instead it will use the template "slideshows/random_slide/default.html". And unlike the *Slides show* plugin it don't embed a javascript config template because this is not really useful for a simple slide;
+* **Random slide** : to display only one random slide, it will never use the template defined in the slideshow object, instead it will use the template ``slideshows/random_slide/default.html``. And unlike the *Slides show* plugin it don't embed a javascript config template because this is not really useful for a simple slide;
 
 Templates
-*********
+.........
 
 Slideshow content templates will have the following context variables :
 
-* slideshow_js_config : the generated config template if any, else an empty string;
-* slideshow_instance : the Slideshow model instance;
-* slideshow_slides : a queryset of published slides for the Slideshow instance;
+* ``slideshow_js_config`` : the generated config template if any, else an empty string;
+* ``slideshow_instance`` : the Slideshow model instance;
+* ``slideshow_slides`` : a queryset of published slides for the Slideshow instance;
 
 Slideshow config templates will have the following context variables :
 
-* slideshow_instance : the Slideshow model instance;
-* slideshow_slides : a queryset of published slides for the Slideshow instance;
+* ``slideshow_instance`` : the Slideshow model instance;
+* ``slideshow_slides`` : a queryset of published slides for the Slideshow instance;
 
 This is available for the template tag and the cms plugin.
+
+With the views
+**************
+
+Views use the defined template in Slideshow instance, there is no particular process to define.
+
+* You can reach a slideshow view with an url like ``/slideshows/show_slides/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;
+* You can reach the random image mode for a slideshow view with an url like ``/slideshows/random_slide/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Modèles de données
+Models
 """
 import datetime
 
@@ -20,6 +20,10 @@ PUBLISHED_CHOICES = (
     (False, _('Unpublished')),
 )
 
+DEFAULT_SLIDESHOWS_TEMPLATE = getattr(settings, 'DEFAULT_SLIDESHOWS_TEMPLATE', '')
+DEFAULT_SLIDESHOWS_CONFIG = getattr(settings, 'DEFAULT_SLIDESHOWS_CONFIG', '')
+DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = getattr(settings, 'DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE', '')
+
 class Slideshow(models.Model):
     """
     Slideshow that contains slides
@@ -27,8 +31,8 @@ class Slideshow(models.Model):
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
-    template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=settings.SLIDESHOWS_TEMPLATES[0][0], max_length=100, blank=False)
-    config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default="", max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
+    template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
+    config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default=DEFAULT_SLIDESHOWS_CONFIG, max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
 
     def __unicode__(self):
         return self.title
@@ -93,12 +97,14 @@ except ImportError:
 else:
     class SlideshowPlugin(CMSPlugin):
         slideshow = models.ForeignKey('slideshows.Slideshow')
+        template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
 
         def __unicode__(self):
             return self.slideshow.title
 
     class SlideshowRandomImagePlugin(CMSPlugin):
         slideshow = models.ForeignKey('slideshows.Slideshow')
+        template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_RANDOM_SLIDE_TEMPLATES, default=DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE, max_length=100, blank=False)
 
         def __unicode__(self):
             return self.slideshow.title

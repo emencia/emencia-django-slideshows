@@ -1,5 +1,6 @@
 import random
 
+from django.conf import settings
 from django.db.models import Count
 from django import template
 from django.utils.safestring import mark_safe
@@ -9,45 +10,23 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
 from slideshows.models import SlideshowPlugin as SlideshowPluginModel
+from slideshows.models import SlideshowRandomImagePlugin as SlideshowRandomImagePluginModel
+from slideshows.models import DEFAULT_SLIDESHOWS_TEMPLATE, DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE
+from slideshows.views import SlideshowMixin
 
-class SlideshowPluginBase(CMSPluginBase):
+class SlideshowPluginBase(SlideshowMixin, CMSPluginBase):
     module = 'Slideshow'
 
 class SlideshowPlugin(SlideshowPluginBase):
     """
     Standard plugin to embed a slideshow
     """
-    model = SlideshowPluginModel # Model where data about this plugin is saved
-    name = _("Slides show",) # Name of the plugin
-    render_template = "slideshows/slides_show/default.html" # template to render the plugin with
-    
-    def get_config_render(self, context, instance):
-        """
-        Render the slideshow Javascript config
-        
-        :type instance: ``slideshows.models.Slideshow`` instance object 
-        :param instance: A slideshow instance
-        
-        :type context: object ``django.template.Context``
-        :param context: Context object
-        
-        :rtype: string
-        :return: config HTML for the slideshow
-        """
-        if not instance.config:
-            return ""
-        
-        t = template.loader.get_template(instance.config)
-        context.update({
-            'slideshow_instance': instance,
-            'slideshow_slides': instance.get_published_slides(),
-        })
-        content = t.render(template.Context(context))
-        
-        return content
+    model = SlideshowPluginModel
+    name = _("Slides show",)
+    render_template = DEFAULT_SLIDESHOWS_TEMPLATE
 
     def render(self, context, instance, placeholder):
-        self.render_template = instance.slideshow.template
+        self.render_template = instance.template
         js_config = self.get_config_render(context, instance.slideshow)
         
         context.update({
@@ -62,25 +41,18 @@ class RandomImagePlugin(SlideshowPluginBase):
     """
     Plugin to embed a random image from a slideshow
     """
-    model = SlideshowPluginModel # Model where data about this plugin is saved
-    name = _("Random single slide",) # Name of the plugin
-    render_template = "slideshows/random_slide/default.html" # template to render the plugin with
+    model = SlideshowRandomImagePluginModel
+    name = _("Random slide",)
+    render_template = DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE
     
     def render(self, context, instance, placeholder):
+        self.render_template = instance.template
         context.update({
             'instance': instance,
             'slideshow_instance': instance.slideshow,
             'slideshow_slide': self.get_random_slide(instance.slideshow.get_published_slides()),
         })
         return context
-    
-    def get_random_slide(self, queryset):
-        """
-        Efficient random select, "order_by('?')" is knowed as slow/painful for some database
-        """
-        count = queryset.aggregate(count=Count('id'))['count']
-        random_index = random.randint(0, count - 1)
-        return queryset.all()[random_index]
 
 # Register plugins
 plugin_pool.register_plugin(SlideshowPlugin)

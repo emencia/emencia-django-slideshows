@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Templates tags divers pour les documents
+Template tags
 """
 from django import template
 from django.utils.safestring import mark_safe
