@@ -47,7 +47,7 @@ class SlideshowAdmin(admin.ModelAdmin):
 class SlideAdmin(admin.ModelAdmin):
     ordering = ('slideshow__slug', 'priority',)
     search_fields = ('title', 'content')
-    list_filter = ('created', 'slideshow')
+    list_filter = ('created', 'slideshow', 'publish')
     list_display = (admin_image, 'title', 'slideshow', 'priority', 'publish', 'created')
     list_editable = ('priority', 'publish',)
     fieldsets = (
