@@ -55,6 +55,8 @@ class SlideshowMixin(object):
         :return: A random slideshow getted from the given queryset
         """
         count = queryset.aggregate(count=Count('id'))['count']
+        if count == 0:
+            return []
         random_index = random.randint(0, count - 1)
         return queryset.all()[random_index]
 
