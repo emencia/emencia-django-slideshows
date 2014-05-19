@@ -23,7 +23,7 @@ admin_image.allow_tags = True
 
 class SlideInline(admin.StackedInline):
     model = Slide
-    
+
 class SlideshowAdmin(admin.ModelAdmin):
     ordering = ('title',)
     search_fields = ('title',)
@@ -33,7 +33,7 @@ class SlideshowAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'classes': ['wide',],
-            'fields': ('title','slug'),
+            'fields': ('title','slug','timer_speed'),
         }),
         (_('Templates'), {
             'classes': ['wide',],
@@ -43,7 +43,7 @@ class SlideshowAdmin(admin.ModelAdmin):
     inlines = [
         SlideInline,
     ]
-    
+
 class SlideAdmin(admin.ModelAdmin):
     ordering = ('slideshow__slug', 'priority',)
     search_fields = ('title', 'content')

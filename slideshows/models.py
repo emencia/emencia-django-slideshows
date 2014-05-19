@@ -24,6 +24,7 @@ DEFAULT_SLIDESHOWS_TEMPLATE = getattr(settings, 'DEFAULT_SLIDESHOWS_TEMPLATE', '
 DEFAULT_SLIDESHOWS_CONFIG = getattr(settings, 'DEFAULT_SLIDESHOWS_CONFIG', '')
 DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = getattr(settings, 'DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE', '')
 
+
 class Slideshow(models.Model):
     """
     Slideshow that contains slides
@@ -33,13 +34,15 @@ class Slideshow(models.Model):
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
     template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
     config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default=DEFAULT_SLIDESHOWS_CONFIG, max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
+    timer_speed = models.IntegerField(_('timer speed'), default=0, null=True, blank=True, help_text=_('Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.'))
+
 
     def __unicode__(self):
         return self.title
-    
+
     def get_published_slides(self):
         return self.slide_set.filter(publish=True)
-    
+
     def count_published_slides(self):
         return self.get_published_slides().count()
     count_published_slides.short_description = _('Published slides')
@@ -48,8 +51,9 @@ class Slideshow(models.Model):
         # First create
         if not self.created:
             self.created = datetime.datetime.now()
-        
+
         super(Slideshow, self).save(*args, **kwargs)
+
 
 class Slide(models.Model):
     """
@@ -82,7 +86,7 @@ class Slide(models.Model):
         # First create
         if not self.created:
             self.created = datetime.datetime.now()
-        
+
         super(Slide, self).save(*args, **kwargs)
 
     class Meta:
