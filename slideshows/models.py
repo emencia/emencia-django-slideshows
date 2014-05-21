@@ -67,6 +67,7 @@ class Slide(models.Model):
     content = HTMLField(_("content"), blank=True)
     image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=True)
     url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
+    url_new_window = models.BooleanField(_('new window'), default=False, help_text=_('If checked the link will be open in a new window'))
 
     def __unicode__(self):
         return self.title
