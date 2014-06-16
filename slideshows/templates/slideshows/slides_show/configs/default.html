@@ -2,11 +2,14 @@
 //<![CDATA[
 $(window).load(function () {
     $('#slides-container .slide-item').each(function(){
-        console.log($(this));
         if( $(this).attr('data-slide-url') ){
             $(this).addClass("clickable");
             $(this).click(function(){
-                window.location.href = $(this).attr('data-slide-url');
+                if( $(this).attr('data-slide-url-target') && ($(this).attr('data-slide-url-target') == '_blank' || $(this).attr('data-slide-url-target') == 'blank') ){
+                    window.open($(this).attr('data-slide-url'), '_blank');
+                } else {
+                    window.location.href = $(this).attr('data-slide-url');
+                }
                 return false;
             })
         }
@@ -15,6 +18,7 @@ $(window).load(function () {
     $('#slides-container').orbit({ 
         fluid: '16x9',
         pauseOnHover:true,
+        {% if slideshow_instance.transition_time %}timer_speed: {{ slideshow_instance.transition_time }},{% endif %}
         startClockOnMouseOut:true
     });
 });

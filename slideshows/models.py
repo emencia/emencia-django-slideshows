@@ -34,7 +34,7 @@ class Slideshow(models.Model):
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
     template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
     config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default=DEFAULT_SLIDESHOWS_CONFIG, max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
-    timer_speed = models.IntegerField(_('timer speed'), default=0, null=True, blank=True, help_text=_('Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.'))
+    transition_time = models.IntegerField(_('transition time'), default=0, null=True, blank=True, help_text=_('Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.'))
 
 
     def __unicode__(self):
@@ -67,7 +67,7 @@ class Slide(models.Model):
     content = HTMLField(_("content"), blank=True)
     image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=True)
     url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
-    url_new_window = models.BooleanField(_('new window'), default=False, help_text=_('If checked the link will be open in a new window'))
+    open_blank = models.BooleanField(_('open new window'), default=False, help_text=_('If checked the link will be open in a new window'))
 
     def __unicode__(self):
         return self.title

@@ -33,7 +33,7 @@ class SlideshowAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'classes': ['wide',],
-            'fields': ('title','slug','timer_speed'),
+            'fields': ('title','slug','transition_time'),
         }),
         (_('Templates'), {
             'classes': ['wide',],
@@ -61,7 +61,7 @@ class SlideAdmin(admin.ModelAdmin):
             'fields': ('image',)
         }),
         (None, {
-            'fields': ('url', 'url_new_window')
+            'fields': ('url', 'open_blank')
         }),
         (None, {
             'fields': ('content',),

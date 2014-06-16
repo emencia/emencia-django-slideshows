@@ -2,7 +2,13 @@
 
 <div id="slides-container">
 {% for slide in slideshow_slides %}
-    <div class="item-{{ forloop.counter }} slide-item" style="background-image: url('{{ slide.image.url }}');" data-slide-title="{{ slide.title }}"{% if slide.url %} data-slide-url="{{ slide.url }}"{% endif %}>
+    <div class="item-{{ forloop.counter }} slide-item"
+         style="background-image: url('{{ slide.image.url }}');" 
+         data-slide-title="{{ slide.title }}"
+         {% if slide.url %} 
+            data-slide-url="{{ slide.url }}"
+            {% if slide.open_blank %} data-slide-url-target="_blank"{% endif %}
+         {% endif %}>
         <div class="row content">
             {% if slide.content %}<div class="six columns well-box">
             {{ slide.content|safe }}
