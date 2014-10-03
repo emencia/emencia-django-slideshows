@@ -1,6 +1,7 @@
-.. _django-cms: http://www.django-cms.org/
+.. _DjangoCMS: http://www.django-cms.org/
 .. _South: http://south.readthedocs.org/en/latest/
-.. _sorl-thumbnail: https://github.com/sorl/sorl-thumbnail
+.. _django-filer: https://github.com/stefanfoulis/django-filer
+.. _easy-thumbnails: https://github.com/SmileyChris/easy-thumbnails
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
 
 Introduction
@@ -15,13 +16,16 @@ It does not contains any assets to integrate it in your site, this is at your re
 Require
 =======
 
-* `sorl-thumbnail`_;
+* Django >= 1.6 (Django <= 1.5 support has been dropped);
+* `django-filer`_ >= 0.9.7 to manage image files;
+* `easy-thumbnails`_ to manage thumbnails (used in Django admin slide list);
+* `DjangoCMS`_ >= 3.0;
 * `djangocms_text_ckeditor`_ to easier content edit;
 
 Optional
 ********
 
-`South`_ migration is supported. This is not required, but strongly recommended for future updates.
+* `South`_ migration is supported. This is not required, but strongly recommended for future updates;
 
 Install
 =======
@@ -31,6 +35,8 @@ Add it to your installed apps in the settings : ::
     INSTALLED_APPS = (
         ...
         'slideshows',
+        'filer',
+        'easy_thumbnails',
         ...
     )
 
@@ -78,7 +84,7 @@ If you have installed `South`_, after updating an existing install to a major ne
 Usage
 =====
 
-Either with the template tag or the cms plugin, the process to build the HTML will be to generate the optional config HTML if any, then generate the content HTML (where the config HTML would be avalaible as a context variable).
+Either with the template tag or the `DjangoCMS`_ plugins, the process to build the HTML will be to generate the optional config HTML if any, then generate the content HTML (where the config HTML would be avalaible as a context variable).
 
 The common way is to display a Slideshow with all its slides, this is called the **Slides show**. And there is an *extra mode* called **Random slide** which only a display a single slide take randomly from the published slides of a Slideshow.
 
@@ -103,8 +109,8 @@ Also you can override the content template and the config template saved within 
 
 Note that if the given Slideshow slug does not exist, this will raise a Http404.
 
-With the cms plugins
-********************
+With the DjangoCMS plugins
+**************************
 
 Just go to the pages admin, and use the plugin you want in a placeholder content. You will have to select a Slideshow that will be used in your page.
 

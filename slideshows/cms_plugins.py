@@ -17,6 +17,7 @@ from slideshows.views import SlideshowMixin
 class SlideshowPluginBase(SlideshowMixin, CMSPluginBase):
     module = 'Slideshow'
 
+
 class SlideshowPlugin(SlideshowPluginBase):
     """
     Standard plugin to embed a slideshow
@@ -37,6 +38,7 @@ class SlideshowPlugin(SlideshowPluginBase):
         })
         return context
 
+
 class RandomImagePlugin(SlideshowPluginBase):
     """
     Plugin to embed a random image from a slideshow
@@ -53,6 +55,7 @@ class RandomImagePlugin(SlideshowPluginBase):
             'slideshow_slide': self.get_random_slide(instance.slideshow.get_published_slides()),
         })
         return context
+
 
 # Register plugins
 plugin_pool.register_plugin(SlideshowPlugin)

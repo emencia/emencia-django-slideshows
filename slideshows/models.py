@@ -9,11 +9,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
+from filer.fields.image import FilerImageField
+
 from djangocms_text_ckeditor.fields import HTMLField
-
-from .utils import content_file_name
-
-IMAGE_FILE_UPLOADTO = lambda x,y: content_file_name('slideshows/slides/%Y/%m/%d', x, y)
 
 PUBLISHED_CHOICES = (
     (True, _('Published')),
@@ -65,7 +63,7 @@ class Slide(models.Model):
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
     publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
     content = HTMLField(_("content"), blank=True)
-    image = models.ImageField(_('image'), upload_to=IMAGE_FILE_UPLOADTO, max_length=255, blank=True)
+    image = FilerImageField(verbose_name=_('image'), related_name="slide_image", null=True, blank=True, default=None)
     url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
     open_blank = models.BooleanField(_('open new window'), default=False, help_text=_('If checked the link will be open in a new window'))
 
@@ -96,7 +94,7 @@ class Slide(models.Model):
         ordering = ('priority',)
 
 try:
-    from cms.models import CMSPlugin
+    from cms.models.pluginmodel import CMSPlugin
 except ImportError:
     pass
 else:
