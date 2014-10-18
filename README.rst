@@ -13,6 +13,12 @@ Slideshows can use custom templates and custom config templates. Config template
 
 It does not contains any assets to integrate it in your site, this is at your responsability to integrate it (choose and install your slider library, add your assets where you need, customise the template, etc..).
 
+Links
+*****
+
+* Download his `PyPi package <https://pypi.python.org/pypi/emencia-django-slideshows>`_;
+* Clone it on his `Github repository <https://github.com/emencia/emencia-django-slideshows>`_;
+
 Require
 =======
 
