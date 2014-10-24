@@ -4,21 +4,17 @@ Admin for sliders
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from easy_thumbnails.files import get_thumbnailer
+from filebrowser.settings import ADMIN_THUMBNAIL
 
 from .models import Slideshow, Slide
 
-def admin_image(obj):
-    if obj.image:
-        #try:
-        url = get_thumbnailer(obj.image).get_thumbnail({'size': (75, 75), 'crop': False}).url
-        #except:
-            #return _('Invalid image for %s') % unicode(obj)
-        return '<img src="%s" alt="%s" />' % (url, unicode(obj))
+def slide_image_thumbnail(obj):
+    if obj.image and obj.image.filetype == "Image":
+        return '<img src="%s" />' % obj.image.version_generate(ADMIN_THUMBNAIL).url
     else:
         return _('No image for %s') % unicode(obj)
-admin_image.short_description = _('image')
-admin_image.allow_tags = True
+slide_image_thumbnail.short_description = _('image')
+slide_image_thumbnail.allow_tags = True
 
 class SlideInline(admin.StackedInline):
     model = Slide
@@ -47,7 +43,7 @@ class SlideAdmin(admin.ModelAdmin):
     ordering = ('slideshow__slug', 'priority',)
     search_fields = ('title', 'content')
     list_filter = ('created', 'slideshow', 'publish')
-    list_display = (admin_image, 'title', 'slideshow', 'priority', 'publish', 'created')
+    list_display = (slide_image_thumbnail, 'title', 'slideshow', 'priority', 'publish', 'created')
     list_editable = ('priority', 'publish',)
     fieldsets = (
         (None, {

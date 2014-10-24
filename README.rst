@@ -1,7 +1,7 @@
 .. _DjangoCMS: http://www.django-cms.org/
 .. _South: http://south.readthedocs.org/en/latest/
-.. _django-filer: https://github.com/stefanfoulis/django-filer
-.. _easy-thumbnails: https://github.com/SmileyChris/easy-thumbnails
+.. _django-filebrowser: https://github.com/sehmaschine/django-filebrowser
+.. _django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
 
 Introduction
@@ -23,8 +23,7 @@ Require
 =======
 
 * Django >= 1.6 (Django <= 1.5 support has been dropped);
-* `django-filer`_ >= 0.9.7 to manage image files;
-* `easy-thumbnails`_ to manage thumbnails (used in Django admin slide list);
+* `django-filebrowser`_ >= 3.5.6 or `django-filebrowser-no-grappelli`_ >= 3.5.6 (depends if you use django-grapelli or not);
 * `DjangoCMS`_ >= 3.0;
 * `djangocms_text_ckeditor`_ to easier content edit;
 
@@ -41,8 +40,7 @@ Add it to your installed apps in the settings : ::
     INSTALLED_APPS = (
         ...
         'slideshows',
-        'filer',
-        'easy_thumbnails',
+        'filebrowser',
         ...
     )
 
@@ -68,9 +66,25 @@ Then add the following settings : ::
     DEFAULT_SLIDESHOWS_CONFIG = ""
     DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = SLIDESHOWS_RANDOM_SLIDE_TEMPLATES[0][0]
 
+And some `django-filebrowser`_ settings (see its documentation for more details) : ::
+
+    FILEBROWSER_VERSIONS_BASEDIR = '_uploads_versions'
+
+    FILEBROWSER_MAX_UPLOAD_SIZE = 10*1024*1024 # 10 Mb
+
+    FILEBROWSER_NORMALIZE_FILENAME = True
+
 And if you want to use the views add this to your main ``urls.py`` : ::
 
-    url(r'^slideshows/', include('slideshows.urls', namespace='slideshows')),
+    from django.conf.urls import url, patterns
+    from filebrowser.sites import site as filebrowser_site
+
+    urlpatterns = patterns('',
+        ...
+        url(r'^slideshows/', include('slideshows.urls', namespace='slideshows')),
+        url(r'^admin/filebrowser/', include(filebrowser_site.urls)),
+        ...
+    )
 
 You can fill entries with your custom templates if needed.
 

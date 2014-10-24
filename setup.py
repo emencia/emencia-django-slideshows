@@ -23,7 +23,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.6',
-        'django-filer>=0.9.7',
+        'django-filebrowser-no-grappelli>=3.5.6',
         'easy-thumbnails',
         'djangocms_text_ckeditor',
     ],
