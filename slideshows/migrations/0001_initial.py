@@ -4,6 +4,7 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+from __init__ import get_ckeditor_field_name
 
 class Migration(SchemaMigration):
 
@@ -25,7 +26,7 @@ class Migration(SchemaMigration):
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('priority', self.gf('django.db.models.fields.IntegerField')(default=100)),
             ('publish', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('content', self.gf('djangocms_text_ckeditor.fields.HTMLField')()),
+            ('content', self.gf(get_ckeditor_field_name())()),
             ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=255)),
         ))
         db.send_create_signal('slideshows', ['Slide'])

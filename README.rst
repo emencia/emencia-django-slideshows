@@ -3,15 +3,16 @@
 .. _django-filebrowser: https://github.com/sehmaschine/django-filebrowser
 .. _django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
+.. _django-ckeditor: https://github.com/shaunsephton/django-ckeditor
 
 Introduction
 ============
 
-Very simple, you can have multiple Slideshows and each of them have their own slides. Slides can be ordered and they contains a title, an optional content text, an optional URL and an optional image.
+Very simple, you can have **multiple Slideshows** and each of them **have their own slides**. Slides can be ordered and they contains a title, an optional content text, an optional URL and an optional image.
 
 Slideshows can use custom templates and custom config templates. Config templates are used to contains some Javascript to configure/initialize your slideshow with your slider library. But by default a Slideshow item have no config template, this is optional.
 
-It does not contains any assets to integrate it in your site, this is at your responsability to integrate it (choose and install your slider library, add your assets where you need, customise the template, etc..).
+It does not contains any assets to integrate it in your site, this is at your responsability to integrate it (choose and install your slider library, add your assets where you need, customize the template, etc..).
 
 Links
 *****
@@ -24,13 +25,26 @@ Require
 
 * Django >= 1.6 (Django <= 1.5 support has been dropped);
 * `django-filebrowser`_ >= 3.5.6 or `django-filebrowser-no-grappelli`_ >= 3.5.6 (depends if you use django-grapelli or not);
-* `DjangoCMS`_ >= 3.0;
-* `djangocms_text_ckeditor`_ to easier content edit;
 
 Optional
 ********
 
 * `South`_ migration is supported. This is not required, but strongly recommended for future updates;
+* `DjangoCMS`_ >= 3.0 if you want to use slideshows `With the DjangoCMS plugins`_;
+* `djangocms_text_ckeditor`_ >= 2.4.0 (it will depends from your `DjangoCMS`_ version) OR `django-ckeditor`_ >= 4.4.4;
+
+Ckeditor
+--------
+
+A Ckeditor django app (`djangocms_text_ckeditor`_ OR `django-ckeditor`_) can be installed to use it for the ``Slide.content`` model attribute instead of the simple ``TextField``.
+
+So **it is at your responsability** to manualy install (with pip, buildout, etc..) one of them if you need it. Once it's installed, you won't need to worry about this again.
+
+Note that the default assumed app is `djangocms_text_ckeditor`_ and only if not installed, `django-ckeditor`_ will be assumed. So if you have installed all of them, `djangocms_text_ckeditor`_ will be used. If none of them is installed, the default Django field ``TextField`` will be used.
+
+Choosing what app to install depends mostly from if you have allready installed DjangoCMS or not. If you have, you probably allready have its ckeditor app installed, so no need to install the other app because it will not be used. If you don't have installed DjangoCMS, just install `django-ckeditor`_.
+
+Finally you can add custom settings for CKeditor, see the django app documentation to see how to set them (then you probably will have to go to the official CKeditor documentation to know all available settings).
 
 Install
 =======
@@ -44,6 +58,8 @@ Add it to your installed apps in the settings : ::
         ...
     )
 
+If you have installed one of the django app for CKeditor, add it also to your ``settings.INSTALLED_APPS``.
+    
 Then add the following settings : ::
 
     # Available templates to display a slideshow
@@ -66,7 +82,7 @@ Then add the following settings : ::
     DEFAULT_SLIDESHOWS_CONFIG = ""
     DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = SLIDESHOWS_RANDOM_SLIDE_TEMPLATES[0][0]
 
-And some `django-filebrowser`_ settings (see its documentation for more details) : ::
+And some `django-filebrowser`_ basic settings (see its documentation for more details) : ::
 
     FILEBROWSER_VERSIONS_BASEDIR = '_uploads_versions'
 
@@ -140,7 +156,7 @@ There is actually two plugins :
 * **Random slide** : to display only one random slide, it will never use the template defined in the slideshow object, instead it will use the template ``slideshows/random_slide/default.html``. And unlike the *Slides show* plugin it don't embed a javascript config template because this is not really useful for a simple slide;
 
 Templates
-.........
+---------
 
 Slideshow content templates will have the following context variables :
 

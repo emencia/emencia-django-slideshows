@@ -4,6 +4,8 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 
+from __init__ import get_ckeditor_field_name
+
 class Migration(DataMigration):
 
     def forwards(self, orm):
@@ -22,7 +24,7 @@ class Migration(DataMigration):
     models = {
         u'slideshows.slide': {
             'Meta': {'ordering': "('priority',)", 'object_name': 'Slide'},
-            'content': ('djangocms_text_ckeditor.fields.HTMLField', [], {'blank': 'True'}),
+            'content': (get_ckeditor_field_name(), [], {'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '255', 'blank': 'True'}),

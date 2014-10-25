@@ -4,6 +4,7 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+from __init__ import get_ckeditor_field_name
 
 class Migration(SchemaMigration):
 
@@ -22,7 +23,7 @@ class Migration(SchemaMigration):
     models = {
         'slideshows.slide': {
             'Meta': {'ordering': "('priority',)", 'object_name': 'Slide'},
-            'content': ('djangocms_text_ckeditor.fields.HTMLField', [], {'blank': 'True'}),
+            'content': (get_ckeditor_field_name(), [], {'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '255', 'blank': 'True'}),

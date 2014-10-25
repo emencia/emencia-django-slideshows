@@ -24,7 +24,6 @@ setup(
     install_requires=[
         'Django>=1.6',
         'django-filebrowser-no-grappelli>=3.5.6',
-        'djangocms_text_ckeditor',
     ],
     include_package_data=True,
     zip_safe=False
