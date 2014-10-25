@@ -74,7 +74,7 @@ And some `django-filebrowser`_ settings (see its documentation for more details)
 
     FILEBROWSER_NORMALIZE_FILENAME = True
 
-And if you want to use the views add this to your main ``urls.py`` : ::
+And add its views to your main ``urls.py`` : ::
 
     from django.conf.urls import url, patterns
     from filebrowser.sites import site as filebrowser_site
@@ -132,7 +132,7 @@ Note that if the given Slideshow slug does not exist, this will raise a Http404.
 With the DjangoCMS plugins
 **************************
 
-Just go to the pages admin, and use the plugin you want in a placeholder content. You will have to select a Slideshow that will be used in your page.
+Just go to the pages admin and use the plugin in a placeholder content. You will have to select a Slideshow that will be used in your page.
 
 There is actually two plugins :
 
@@ -153,7 +153,7 @@ Slideshow config templates will have the following context variables :
 * ``slideshow_instance`` : the Slideshow model instance;
 * ``slideshow_slides`` : a queryset of published slides for the Slideshow instance;
 
-This is available for the template tag and the cms plugin.
+This is available for the template tag and the cms plugins.
 
 With the views
 **************
