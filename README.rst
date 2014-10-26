@@ -24,7 +24,7 @@ Require
 =======
 
 * Django >= 1.6 (Django <= 1.5 support has been dropped);
-* `django-filebrowser`_ >= 3.5.6 or `django-filebrowser-no-grappelli`_ >= 3.5.6 (depends if you use django-grapelli or not);
+* `django-filebrowser-no-grappelli`_ >= 3.5.6;
 
 Optional
 ********
@@ -82,7 +82,7 @@ Then add the following settings : ::
     DEFAULT_SLIDESHOWS_CONFIG = ""
     DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = SLIDESHOWS_RANDOM_SLIDE_TEMPLATES[0][0]
 
-And some `django-filebrowser`_ basic settings (see its documentation for more details) : ::
+And some `django-filebrowser-no-grappelli`_ basic settings (see its documentation for more details) : ::
 
     FILEBROWSER_VERSIONS_BASEDIR = '_uploads_versions'
 
