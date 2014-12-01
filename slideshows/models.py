@@ -2,12 +2,11 @@
 """
 Models
 """
-import datetime
-
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from filebrowser.fields import FileBrowseField
 
@@ -61,7 +60,7 @@ class Slideshow(models.Model):
     def save(self, *args, **kwargs):
         # First create
         if not self.created:
-            self.created = datetime.datetime.now()
+            self.created = timezone.now()
 
         super(Slideshow, self).save(*args, **kwargs)
 
@@ -83,21 +82,10 @@ class Slide(models.Model):
     def __unicode__(self):
         return self.title
 
-    @property
-    def get_file(self):
-        try:
-            return self.image.url
-        except ValueError:
-            return None
-
-    def clean(self):
-        if not self.get_file:
-            raise ValidationError(_('Please fill an image'))
-
     def save(self, *args, **kwargs):
         # First create
         if not self.created:
-            self.created = datetime.datetime.now()
+            self.created = timezone.now()
 
         super(Slide, self).save(*args, **kwargs)
 

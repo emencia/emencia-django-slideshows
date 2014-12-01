@@ -3,7 +3,9 @@
 <div id="slides-container">
 {% for slide in slideshow_slides %}
     <div class="item-{{ forloop.counter }} slide-item"
-         style="background-image: url('{{ slide.image.url }}');" 
+         {% if slide.image %}
+            style="background-image: url('{{ slide.image.url }}');" 
+         {% endif %}
          data-slide-title="{{ slide.title }}"
          {% if slide.url %} 
             data-slide-url="{{ slide.url }}"
