@@ -62,6 +62,7 @@ class Slide(models.Model):
     slideshow = models.ForeignKey(Slideshow, verbose_name=_('slideshow'), blank=False)
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
+    hide_title = models.BooleanField(_('hide title'), default=False, blank=True, help_text=_('Enable this to hide the slide title'))
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
     publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
     content = HTMLField(_("content"), blank=True)

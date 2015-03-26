@@ -1,5 +1,5 @@
 <div id="slides-container">
-    <div class="item-random slide-item" style="background-image: url('{{ slideshow_slide.image.url }}');" data-slide-title="{{ slideshow_slide.title }}"{% if slideshow_slide.url %} data-slide-url="{{ slideshow_slide.url }}"{% endif %}>
+    <div class="item-random slide-item" style="background-image: url('{{ slideshow_slide.image.url }}');" data-slide-title="{% if not slideshow_slide.hide_title %}{{ slideshow_slide.title }}{% endif %}"{% if slideshow_slide.url %} data-slide-url="{{ slideshow_slide.url }}"{% endif %}>
         <div class="row content">
             {% if slideshow_slide.content %}<div class="six columns well-box">
             {{ slideshow_slide.content|safe }}
