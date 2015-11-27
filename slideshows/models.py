@@ -93,22 +93,3 @@ class Slide(models.Model):
         verbose_name = _("Slide")
         verbose_name_plural = _("Slides")
         ordering = ('priority',)
-
-try:
-    from cms.models.pluginmodel import CMSPlugin
-except ImportError:
-    pass
-else:
-    class SlideshowPlugin(CMSPlugin):
-        slideshow = models.ForeignKey('slideshows.Slideshow')
-        template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
-
-        def __unicode__(self):
-            return self.slideshow.title
-
-    class SlideshowRandomImagePlugin(CMSPlugin):
-        slideshow = models.ForeignKey('slideshows.Slideshow')
-        template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_RANDOM_SLIDE_TEMPLATES, default=DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE, max_length=100, blank=False)
-
-        def __unicode__(self):
-            return self.slideshow.title

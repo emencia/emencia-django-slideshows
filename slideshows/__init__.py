@@ -1,4 +1,4 @@
 """
 Simple Slideshow application
 """
-__version__ = "0.9.4"
+__version__ = "1.0.0"

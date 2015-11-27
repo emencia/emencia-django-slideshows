@@ -5,6 +5,8 @@
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
 .. _django-ckeditor: https://github.com/shaunsephton/django-ckeditor
 
+**Currently under migration to Django1.7, documentation is not up to date**
+
 Introduction
 ============
 
@@ -40,11 +42,11 @@ A Ckeditor django app (`djangocms_text_ckeditor`_ OR `django-ckeditor`_) can be 
 
 So **it is at your responsability** to manualy install (with pip, buildout, etc..) one of them if you need it. Once it's installed, you won't need to worry about this again.
 
-Note that the default assumed app is `djangocms_text_ckeditor`_ and only if not installed, `django-ckeditor`_ will be assumed. So if you have installed all of them, `djangocms_text_ckeditor`_ will be used. If none of them is installed, the default Django field ``TextField`` will be used.
+Note that the default assumed app is `djangocms_text_ckeditor`_ and if not installed, `django-ckeditor`_ will be assumed. If you have installed both, `djangocms_text_ckeditor`_ will be used. If none of them is installed, the default Django field ``TextField`` will be used.
 
-Choosing what app to install depends mostly from if you have allready installed DjangoCMS or not. If you have, you probably allready have its ckeditor app installed, so no need to install the other app because it will not be used. If you don't have installed DjangoCMS, just install `django-ckeditor`_.
+Choosing what app to install depends mostly from if you have allready installed DjangoCMS or not. If you have, you probably allready have its ckeditor app installed, so no need to install the other app because. If you don't have installed DjangoCMS, just install `django-ckeditor`_.
 
-Finally you can add custom settings for CKeditor, see the django app documentation to see how to set them (then you probably will have to go to the official CKeditor documentation to know all available settings).
+Finally you can add custom settings for CKeditor, see its documentation to see how to set them (you may have to go to official CKeditor documentation to know about available settings).
 
 Install
 =======
@@ -60,35 +62,13 @@ Add it to your installed apps in the settings : ::
 
 If you have installed one of the django app for CKeditor, add it also to your ``settings.INSTALLED_APPS``.
     
-Then add the following settings : ::
+Then add its settings : ::
 
-    # Available templates to display a slideshow
-    SLIDESHOWS_TEMPLATES = (
-        ("slideshows/slides_show/default.html", "Default template"),
-    )
+    from porticus.settings import *
 
-    # Available config file to initialize your slideshow Javascript stuff
-    SLIDESHOWS_CONFIGS = (
-        ("slideshows/slides_show/configs/default.html", "Default config"),
-    )
+See the app ``settings.py`` file to see what setting you can override.
 
-    # Available templates for "random slide" mode
-    SLIDESHOWS_RANDOM_SLIDE_TEMPLATES = (
-        ("slideshows/random_slide/default.html", "Random image default"),
-    )
-
-    # Default templates to use in admin forms
-    DEFAULT_SLIDESHOWS_TEMPLATE = SLIDESHOWS_TEMPLATES[0][0]
-    DEFAULT_SLIDESHOWS_CONFIG = ""
-    DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = SLIDESHOWS_RANDOM_SLIDE_TEMPLATES[0][0]
-
-And some `django-filebrowser-no-grappelli`_ basic settings (see its documentation for more details) : ::
-
-    FILEBROWSER_VERSIONS_BASEDIR = '_uploads_versions'
-
-    FILEBROWSER_MAX_UPLOAD_SIZE = 10*1024*1024 # 10 Mb
-
-    FILEBROWSER_NORMALIZE_FILENAME = True
+Also there is some settings you may see about `django-filebrowser-no-grappelli`_ (see its documentation for more details).
 
 And add its views to your main ``urls.py`` : ::
 

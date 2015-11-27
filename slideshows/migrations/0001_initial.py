@@ -1,64 +1,56 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
 
-from __init__ import get_ckeditor_field_name
-
-class Migration(SchemaMigration):
-
-    def forwards(self, orm):
-        # Adding model 'Slideshow'
-        db.create_table('slideshows_slideshow', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=75)),
-        ))
-        db.send_create_signal('slideshows', ['Slideshow'])
-
-        # Adding model 'Slide'
-        db.create_table('slideshows_slide', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('slideshow', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['slideshows.Slideshow'])),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('priority', self.gf('django.db.models.fields.IntegerField')(default=100)),
-            ('publish', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('content', self.gf(get_ckeditor_field_name())()),
-            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=255)),
-        ))
-        db.send_create_signal('slideshows', ['Slide'])
+from django.db import models, migrations
+import filebrowser.fields
+import djangocms_text_ckeditor.fields
 
 
-    def backwards(self, orm):
-        # Deleting model 'Slideshow'
-        db.delete_table('slideshows_slideshow')
+class Migration(migrations.Migration):
 
-        # Deleting model 'Slide'
-        db.delete_table('slideshows_slide')
+    dependencies = [
+    ]
 
-
-    models = {
-        'slideshows.slide': {
-            'Meta': {'ordering': "('priority',)", 'object_name': 'Slide'},
-            'content': ('djangocms_text_ckeditor.fields.HTMLField', [], {}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '255'}),
-            'priority': ('django.db.models.fields.IntegerField', [], {'default': '100'}),
-            'publish': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'slideshow': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['slideshows.Slideshow']"}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        'slideshows.slideshow': {
-            'Meta': {'object_name': 'Slideshow'},
-            'created': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '75'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-    }
-
-    complete_apps = ['slideshows']
+    operations = [
+        migrations.CreateModel(
+            name='Slide',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(verbose_name='created', editable=False, blank=True)),
+                ('title', models.CharField(max_length=255, verbose_name='title')),
+                ('priority', models.IntegerField(default=100, help_text='Priority display value', verbose_name='display priority')),
+                ('publish', models.BooleanField(default=True, help_text='Unpublished slide will not be displayed in its slideshow', verbose_name='published', choices=[(True, 'Published'), (False, 'Unpublished')])),
+                ('content', djangocms_text_ckeditor.fields.HTMLField(verbose_name='content', blank=True)),
+                ('image', filebrowser.fields.FileBrowseField(default=None, max_length=255, null=True, verbose_name='image', blank=True)),
+                ('url', models.CharField(help_text='An URL that can be used in the template for this entry', max_length=255, verbose_name='url', blank=True)),
+                ('open_blank', models.BooleanField(default=False, help_text='If checked the link will be open in a new window', verbose_name='open new window')),
+            ],
+            options={
+                'ordering': ('priority',),
+                'verbose_name': 'Slide',
+                'verbose_name_plural': 'Slides',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Slideshow',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(verbose_name='created', editable=False, blank=True)),
+                ('title', models.CharField(max_length=255, verbose_name='title')),
+                ('slug', models.SlugField(unique=True, max_length=75, verbose_name='slug')),
+                ('template', models.CharField(default=b'slideshows/slides_show/default.html', max_length=100, verbose_name='content template', choices=[(b'slideshows/slides_show/default.html', b'Slider default'), (b'slideshows/slides_show/royalslider.html', b'Royal slider')])),
+                ('config', models.CharField(default=b'', choices=[(b'slideshows/slides_show/configs/default.html', b'Slider default')], max_length=100, blank=True, help_text='The Javascript config file to use to configure and initialize the slideshow', verbose_name='config template')),
+                ('transition_time', models.IntegerField(default=0, help_text='Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.', null=True, verbose_name='transition time', blank=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='slide',
+            name='slideshow',
+            field=models.ForeignKey(verbose_name='slideshow', to='slideshows.Slideshow'),
+            preserve_default=True,
+        ),
+    ]
