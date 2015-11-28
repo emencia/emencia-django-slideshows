@@ -1,16 +1,14 @@
 .. _DjangoCMS: http://www.django-cms.org/
-.. _South: http://south.readthedocs.org/en/latest/
 .. _django-filebrowser: https://github.com/sehmaschine/django-filebrowser
 .. _django-filebrowser-no-grappelli: https://github.com/smacker/django-filebrowser-no-grappelli
 .. _djangocms_text_ckeditor: https://github.com/divio/djangocms-text-ckeditor
 .. _django-ckeditor: https://github.com/shaunsephton/django-ckeditor
-
-**Currently under migration to Django1.7, documentation is not up to date**
+.. _cmsplugin-slideshows: https://github.com/emencia/cmsplugin-slideshows
 
 Introduction
 ============
 
-Very simple, you can have **multiple Slideshows** and each of them **have their own slides**. Slides can be ordered and they contains a title, an optional content text, an optional URL and an optional image.
+You can have **multiple Slideshows** and each of them **have their own slides**. Slides can be ordered and they contains a title, an optional content text, an optional URL and an optional image.
 
 Slideshows can use custom templates and custom config templates. Config templates are used to contains some Javascript to configure/initialize your slideshow with your slider library. But by default a Slideshow item have no config template, this is optional.
 
@@ -25,20 +23,21 @@ Links
 Require
 =======
 
-* Django >= 1.6 (Django <= 1.5 support has been dropped);
+* Django >= 1.7;
+
+  - Last release for *Django<1.7* is available on repository branch *django_1-6*;
+  
 * `django-filebrowser-no-grappelli`_ >= 3.5.6;
 
 Optional
 ********
 
-* `South`_ migration is supported. This is not required, but strongly recommended for future updates;
-* `DjangoCMS`_ >= 3.0 if you want to use slideshows `With the DjangoCMS plugins`_;
-* `djangocms_text_ckeditor`_ >= 2.4.0 (it will depends from your `DjangoCMS`_ version) OR `django-ckeditor`_ >= 4.4.4;
+* `djangocms_text_ckeditor`_ >= 2.4.0 OR `django-ckeditor`_ >= 4.4.4 (see `Ckeditor`_ section);
 
 Ckeditor
 --------
 
-A Ckeditor django app (`djangocms_text_ckeditor`_ OR `django-ckeditor`_) can be installed to use it for the ``Slide.content`` model attribute instead of the simple ``TextField``.
+A Ckeditor django app can be installed to use it for the ``Slide.content`` model attribute instead of the simple ``TextField``.
 
 So **it is at your responsability** to manualy install (with pip, buildout, etc..) one of them if you need it. Once it's installed, you won't need to worry about this again.
 
@@ -66,7 +65,7 @@ Then add its settings : ::
 
     from porticus.settings import *
 
-See the app ``settings.py`` file to see what setting you can override.
+See the app ``settings.py`` file to see what settings you can override.
 
 Also there is some settings you may see about `django-filebrowser-no-grappelli`_ (see its documentation for more details).
 
@@ -82,27 +81,16 @@ And add its views to your main ``urls.py`` : ::
         ...
     )
 
-You can fill entries with your custom templates if needed.
+Finally install app models in your database using Django migrations: ::
 
-And finally add the new models to your database : ::
-
-    ./manage.py syncdb
-
-If DjangoCMS is installed (this should be as `djangocms_text_ckeditor`_ require it), a plugin will be available to use slideshows in your pages.
-
-Update
-======
-
-If you have installed `South`_, after updating an existing install to a major new version you can automatically update your database : ::
-
-    ./manage.py migrate slideshows
+    python manage.py migrate
 
 Usage
 =====
 
-Either with the template tag or the `DjangoCMS`_ plugins, the process to build the HTML will be to generate the optional config HTML if any, then generate the content HTML (where the config HTML would be avalaible as a context variable).
+The process to build the HTML will be to generate the optional config HTML if any, then generate the content HTML.
 
-The common way is to display a Slideshow with all its slides, this is called the **Slides show**. And there is an *extra mode* called **Random slide** which only a display a single slide take randomly from the published slides of a Slideshow.
+The common way is to display a Slideshow with all slides, this is called the **Slides show**. And there is another mode called **Random slide** which only display a single slide taked randomly from a Slideshow published slides.
 
 With the template tag
 *********************
@@ -125,18 +113,21 @@ Also you can override the content template and the config template saved within 
 
 Note that if the given Slideshow slug does not exist, this will raise a Http404.
 
-With the DjangoCMS plugins
-**************************
+With the views
+**************
 
-Just go to the pages admin and use the plugin in a placeholder content. You will have to select a Slideshow that will be used in your page.
+Views use the defined template in Slideshow instance, there is no particular process to define.
 
-There is actually two plugins :
+* You can reach a slideshow view with an url like ``/slideshows/show_slides/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;
+* You can reach the random image mode for a slideshow view with an url like ``/slideshows/random_slide/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;
 
-* **Slides show** : the default one to display your slides in a slideshow, it use the template defined in the slideshow object (or the default template if empty);
-* **Random slide** : to display only one random slide, it will never use the template defined in the slideshow object, instead it will use the template ``slideshows/random_slide/default.html``. And unlike the *Slides show* plugin it don't embed a javascript config template because this is not really useful for a simple slide;
+Within DjangoCMS pages
+**********************
+
+You can install an additional package to use your slideshows in pages placeholder contents. See `cmsplugin-slideshows`_.
 
 Templates
----------
+*********
 
 Slideshow content templates will have the following context variables :
 
@@ -149,12 +140,4 @@ Slideshow config templates will have the following context variables :
 * ``slideshow_instance`` : the Slideshow model instance;
 * ``slideshow_slides`` : a queryset of published slides for the Slideshow instance;
 
-This is available for the template tag and the cms plugins.
-
-With the views
-**************
-
-Views use the defined template in Slideshow instance, there is no particular process to define.
-
-* You can reach a slideshow view with an url like ``/slideshows/show_slides/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;
-* You can reach the random image mode for a slideshow view with an url like ``/slideshows/random_slide/SLUG/`` where ``SLUG`` is the defined slug on the Slideshow object;
+This is available for the template tag and also the cms plugin.
