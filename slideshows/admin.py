@@ -50,7 +50,7 @@ class SlideAdmin(admin.ModelAdmin):
             'fields': ('slideshow',),
         }),
         (None, {
-            'fields': ('title', 'priority', 'publish')
+            'fields': ('title', 'alt', 'priority', 'publish')
         }),
         (None, {
             'fields': ('image',)

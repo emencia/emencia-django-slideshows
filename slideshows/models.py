@@ -72,6 +72,7 @@ class Slide(models.Model):
     slideshow = models.ForeignKey(Slideshow, verbose_name=_('slideshow'), blank=False)
     created = models.DateTimeField(_('created'), blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
+    alt = models.CharField(_('alt'), blank=True, null=False, max_length=255)
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
     publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
     content = CkeditorField(_("content"), blank=True)
