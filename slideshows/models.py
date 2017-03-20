@@ -9,6 +9,8 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from filebrowser.fields import FileBrowseField
+from django.utils.encoding import python_2_unicode_compatible
+
 
 # Try to find a django app for the CKeditor, else fallback on TextField
 try:
@@ -35,6 +37,7 @@ DEFAULT_SLIDESHOWS_CONFIG = getattr(settings, 'DEFAULT_SLIDESHOWS_CONFIG', '')
 DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE = getattr(settings, 'DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE', '')
 
 
+@python_2_unicode_compatible
 class Slideshow(models.Model):
     """
     Slideshow that contains slides
@@ -46,8 +49,7 @@ class Slideshow(models.Model):
     config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default=DEFAULT_SLIDESHOWS_CONFIG, max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
     transition_time = models.IntegerField(_('transition time'), default=0, null=True, blank=True, help_text=_('Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.'))
 
-
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_published_slides(self):
@@ -65,12 +67,13 @@ class Slideshow(models.Model):
         super(Slideshow, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class Slide(models.Model):
     """
     Slide item
     """
     slideshow = models.ForeignKey(Slideshow, verbose_name=_('slideshow'), blank=False)
-    created = models.DateTimeField(_('created'), blank=True, editable=False)
+    created = models.DateTimeField(_('created'), auto_now_add=True, blank=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
     publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
@@ -79,7 +82,7 @@ class Slide(models.Model):
     url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
     open_blank = models.BooleanField(_('open new window'), default=False, help_text=_('If checked the link will be open in a new window'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):

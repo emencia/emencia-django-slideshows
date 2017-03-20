@@ -7,6 +7,7 @@ from os import makedirs
 from os.path import basename, dirname, exists, isdir, join, splitext
 
 from django.conf import settings
+from django.utils.encoding import force_text
 from django.utils.datetime_safe import strftime
 
 def content_file_name(upload_to_path, instance, filename=None, new_extension=None):
@@ -61,7 +62,10 @@ def get_unique_filename(filename, new_filename=None, new_extension=None):
         extension = splitext(filename)[1][1:]
     if not new_filename:
         now = real_datetime.now()
-        return '%s%s%s%s.%s' % (unicode(now.hour).zfill(2), unicode(now.minute).zfill(2), unicode(now.second).zfill(2), unicode(now.microsecond).zfill(6), extension)
+        return '%s%s%s%s.%s' % (force_text(now.hour).zfill(2),
+                                force_text(now.minute).zfill(2),
+                                force_text(now.second).zfill(2),
+                                force_text(now.microsecond).zfill(6), extension)
     else:
         return '%s.%s' % (new_filename, extension)
 
@@ -96,7 +100,7 @@ def generate_valid_path(filename, path, create_it=True, root_base=settings.MEDIA
              * Chemin absolu du fichier
     """
     if not permissions:
-        permissions = 0744
+        permissions = 0o744
     # Forme le chemin absolu vers le nouvo fichier créé
     relative_path = strftime(real_datetime.now(), path)
     absolute_path = join(root_base, relative_path)

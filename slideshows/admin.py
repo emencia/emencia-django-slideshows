@@ -3,6 +3,7 @@ Admin for sliders
 """
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import force_text
 
 from filebrowser.settings import ADMIN_THUMBNAIL
 
@@ -12,7 +13,7 @@ def slide_image_thumbnail(obj):
     if obj.image and obj.image.filetype == "Image":
         return '<img src="%s" />' % obj.image.version_generate(ADMIN_THUMBNAIL).url
     else:
-        return _('No image for %s') % unicode(obj)
+        return _('No image for %s') % force_text(obj)
 slide_image_thumbnail.short_description = _('image')
 slide_image_thumbnail.allow_tags = True
 
