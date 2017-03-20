@@ -42,7 +42,7 @@ class Slideshow(models.Model):
     """
     Slideshow that contains slides
     """
-    created = models.DateTimeField(_('created'), blank=True, editable=False)
+    created = models.DateTimeField(_('created'), blank=True, auto_now_add=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
     template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
@@ -54,17 +54,6 @@ class Slideshow(models.Model):
 
     def get_published_slides(self):
         return self.slide_set.filter(publish=True)
-
-    def count_published_slides(self):
-        return self.get_published_slides().count()
-    count_published_slides.short_description = _('Published slides')
-
-    def save(self, *args, **kwargs):
-        # First create
-        if not self.created:
-            self.created = timezone.now()
-
-        super(Slideshow, self).save(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -84,13 +73,6 @@ class Slide(models.Model):
 
     def __str__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        # First create
-        if not self.created:
-            self.created = timezone.now()
-
-        super(Slide, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Slide")
