@@ -72,29 +72,29 @@ def get_unique_filename(filename, new_filename=None, new_extension=None):
 def generate_valid_path(filename, path, create_it=True, root_base=settings.MEDIA_ROOT, permissions=settings.FILE_UPLOAD_PERMISSIONS):
     """
     Génére le chemin prévu pour un fichier et créé le chemin si besoin
-    
+
     :type filename: string
     :param filename: Nom du fichier cible
-    
+
     :type path: string
-    :param path: Chemin relatif (au répertoire des médias, ``settings.MEDIA_ROOT``) du 
-                 répertoire contenant le fichier, peut contenir les paramètres de 
-                 substitution possibles avec la méthode 
+    :param path: Chemin relatif (au répertoire des médias, ``settings.MEDIA_ROOT``) du
+                 répertoire contenant le fichier, peut contenir les paramètres de
+                 substitution possibles avec la méthode
                  ``django.utils.datetime_safe.strftime``.
-    
+
     :type create_it: bool
     :param create_it: (optional) Déclenche la création du répertoire si il n'existe pas déja
-    
+
     :type root_base: string
-    :param root_base: (optional) Chemin de base ou créer le fichier, par défaut dans 
+    :param root_base: (optional) Chemin de base ou créer le fichier, par défaut dans
                       le ``MEDIA_ROOT`` du projet.
-    
+
     :type permissions: int
-    :param permissions: (optional) Permission chmod sur le chemin à créer, par 
-                             défaut utilise le ``FILE_UPLOAD_PERMISSIONS`` des settings 
-                             du projet. Et si cette variable n'est pas renseigné dans vos 
+    :param permissions: (optional) Permission chmod sur le chemin à créer, par
+                             défaut utilise le ``FILE_UPLOAD_PERMISSIONS`` des settings
+                             du projet. Et si cette variable n'est pas renseigné dans vos
                              settings, alors un mask 0744 sera utilisé.
-    
+
     :rtype: tuple
     :return: * Chemin relatif du fichier
              * Chemin absolu du fichier
