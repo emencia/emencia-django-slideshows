@@ -11,19 +11,19 @@ from django.utils.datetime_safe import strftime
 
 def content_file_name(upload_to_path, instance, filename=None, new_extension=None):
     """
-    Méthode à utiliser pour l'attribut "upload_to" d'un FileField/ImageField pour 
-    renommer automatiquement le nom de fichier avec un nom unique et empêcher la 
+    Méthode à utiliser pour l'attribut "upload_to" d'un FileField/ImageField pour
+    renommer automatiquement le nom de fichier avec un nom unique et empêcher la
     conservation de fichier avec des caractères spéciaux.
-    
-    À ne pas utiliser directement sur l'attribut "FileField.upload_to" 
+
+    À ne pas utiliser directement sur l'attribut "FileField.upload_to"
     mais via un callable pour indiquer le chemin "upload_to" par exemple :
-    
+
         ATTACH_FILE_UPLOADTO = lambda x,y: content_file_name('attach/%Y/%m/%d', x, y)
-    
+
     puis
-    
+
         file = models.FileField(u'fichier', upload_to=ATTACH_FILE_UPLOADTO)
-    
+
     TODO: Should enforce lowercase on the file extension
     """
     upload_to = real_datetime.now().strftime(upload_to_path)
@@ -35,23 +35,23 @@ def content_file_name(upload_to_path, instance, filename=None, new_extension=Non
 def get_unique_filename(filename, new_filename=None, new_extension=None):
     """
     Génère un nouveau nom pour un fichier en gardant son extension
-    
-    Soit le nouveau nom est généré à partir de la date 
-    (heures+minutes+secondes+microsecondes) soit un nouveau nom est spécifié et on 
+
+    Soit le nouveau nom est généré à partir de la date
+    (heures+minutes+secondes+microsecondes) soit un nouveau nom est spécifié et on
     l'utilise tel quel.
-    
+
     :type filename: string
     :param filename: Nom du fichier original
-    
+
     :type new_filename: string
-    :param new_filename: (optional) Nouveau nom de fichier personnalisé, ceci implique que 
+    :param new_filename: (optional) Nouveau nom de fichier personnalisé, ceci implique que
                          la date ne sera pas insérée dans le nouveau nom
-    
+
     :type new_extension: string
-    :param new_extension: (optional) Force une nouvelle extension de fichier au lieu de 
-                          celle de l'original. À spécifier sans le "point" de début d'une 
+    :param new_extension: (optional) Force une nouvelle extension de fichier au lieu de
+                          celle de l'original. À spécifier sans le "point" de début d'une
                           extension.
-    
+
     :rtype: string
     :return: Nouveau nom de fichier
     """
@@ -107,5 +107,5 @@ def generate_valid_path(filename, path, create_it=True, root_base=settings.MEDIA
         elif not isdir( absolute_path ):
             # Le chemin existe et n'est pas un répertoire
             raise IOError("'%s' exists and is not a directory." % absolute_path)
-    
+
     return join(relative_path, filename), join(absolute_path, filename)
