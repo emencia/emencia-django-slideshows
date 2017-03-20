@@ -36,6 +36,11 @@ class SlideshowAdmin(admin.ModelAdmin):
             'fields': ('template', 'config')
         }),
     )
+
+    def count_published_slides(self, instance):
+        return instance.get_published_slides().count()
+    count_published_slides.short_description = _('Published slides')
+
     inlines = [
         SlideInline,
     ]
