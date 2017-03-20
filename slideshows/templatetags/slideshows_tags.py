@@ -116,7 +116,7 @@ def do_slideshow_render(parser, token):
     """
     args = token.split_contents()
     if len(args) < 2:
-        raise template.TemplateSyntaxError, "You need to specify at less a \"Slideshow\" SLUG or INSTANCE"
+        raise template.TemplateSyntaxError("You need to specify at less a \"Slideshow\" SLUG or INSTANCE")
     else:
         return SlideshowFragment(*args[1:])
 
