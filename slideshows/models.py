@@ -5,8 +5,6 @@ Models
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
-from django.utils import timezone
 
 from filebrowser.fields import FileBrowseField
 from django.utils.encoding import python_2_unicode_compatible
@@ -45,9 +43,24 @@ class Slideshow(models.Model):
     created = models.DateTimeField(_('created'), blank=True, auto_now_add=True, editable=False)
     title = models.CharField(_('title'), blank=False, max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=75)
-    template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES, default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
-    config = models.CharField(_('config template'), choices=settings.SLIDESHOWS_CONFIGS, default=DEFAULT_SLIDESHOWS_CONFIG, max_length=100, blank=True, help_text=_('The Javascript config file to use to configure and initialize the slideshow'))
-    transition_time = models.IntegerField(_('transition time'), default=0, null=True, blank=True, help_text=_('Sets the amount of time in milliseconds before transitioning a slide. Set 0 to use default value.'))
+    template = models.CharField(_('content template'), choices=settings.SLIDESHOWS_TEMPLATES,
+                                default=DEFAULT_SLIDESHOWS_TEMPLATE, max_length=100, blank=False)
+    config = models.CharField(
+        _('config template'),
+        choices=settings.SLIDESHOWS_CONFIGS,
+        default=DEFAULT_SLIDESHOWS_CONFIG,
+        max_length=100,
+        blank=True,
+        help_text=_('The Javascript config file to use to configure and initialize the slideshow'),
+    )
+    transition_time = models.IntegerField(
+        _('transition time'),
+        default=0,
+        null=True,
+        blank=True,
+        help_text=_('Sets the amount of time in milliseconds before '
+                    'transitioning a slide. Set 0 to use default value.'),
+    )
 
     def __str__(self):
         return self.title
@@ -61,15 +74,55 @@ class Slide(models.Model):
     """
     Slide item
     """
-    slideshow = models.ForeignKey(Slideshow, verbose_name=_('slideshow'), blank=False)
-    created = models.DateTimeField(_('created'), auto_now_add=True, blank=True, editable=False)
-    title = models.CharField(_('title'), blank=False, max_length=255)
-    priority = models.IntegerField(_('display priority'), default=100, help_text=_('Priority display value'))
-    publish = models.BooleanField(_('published'), choices=PUBLISHED_CHOICES, default=True, help_text=_('Unpublished slide will not be displayed in its slideshow'))
-    content = CkeditorField(_("content"), blank=True)
-    image = FileBrowseField(_('image'), max_length=255, null=True, blank=True, default=None)
-    url = models.CharField(_('url'), blank=True, max_length=255, help_text=_('An URL that can be used in the template for this entry'))
-    open_blank = models.BooleanField(_('open new window'), default=False, help_text=_('If checked the link will be open in a new window'))
+    slideshow = models.ForeignKey(
+        Slideshow,
+        verbose_name=_('slideshow'),
+        blank=False,
+    )
+    created = models.DateTimeField(
+        _('created'),
+        auto_now_add=True,
+        blank=True,
+        editable=False,
+    )
+    title = models.CharField(
+        _('title'),
+        blank=False,
+        max_length=255,
+    )
+    priority = models.IntegerField(
+        _('display priority'),
+        default=100,
+        help_text=_('Priority display value'),
+    )
+    publish = models.BooleanField(
+        _('published'),
+        choices=PUBLISHED_CHOICES,
+        default=True,
+        help_text=_('Unpublished slide will not be displayed in its slideshow'),
+    )
+    content = CkeditorField(
+        _("content"),
+        blank=True,
+    )
+    image = FileBrowseField(
+        _('image'),
+        max_length=255,
+        null=True,
+        blank=True,
+        default=None,
+    )
+    url = models.CharField(
+        _('url'),
+        blank=True,
+        max_length=255,
+        help_text=_('An URL that can be used in the template for this entry'),
+    )
+    open_blank = models.BooleanField(
+        _('open new window'),
+        default=False,
+        help_text=_('If checked the link will be open in a new window'),
+    )
 
     def __str__(self):
         return self.title

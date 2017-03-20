@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 
 from slideshows.models import Slideshow, DEFAULT_SLIDESHOWS_TEMPLATE, DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE
 
+
 class SlideshowMixin(object):
     """
     Mixin to share some Slideshow display logic
@@ -59,6 +60,7 @@ class SlideshowMixin(object):
             return []
         random_index = random.randint(0, count - 1)
         return queryset.all()[random_index]
+
 
 class SlideshowView(SlideshowMixin, DetailView):
     model = Slideshow

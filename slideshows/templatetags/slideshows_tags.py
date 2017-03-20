@@ -5,10 +5,12 @@ Template tags
 from django import template
 from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
+from django.utils.six import string_types
 
 from slideshows.models import Slideshow
 
 register = template.Library()
+
 
 class SlideshowFragment(template.Node):
     """
@@ -47,10 +49,10 @@ class SlideshowFragment(template.Node):
         if self.config_varname:
             self.custom_config = self.config_varname.resolve(context)
         # Assume this is a slug (else will be used at an instance)
-        if isinstance(slideshow_instance, basestring):
+        if isinstance(slideshow_instance, string_types):
             slideshow_instance = get_object_or_404(Slideshow, slug=slideshow_instance)
 
-        return mark_safe( self.get_content_render(context, slideshow_instance) )
+        return mark_safe(self.get_content_render(context, slideshow_instance))
 
     def get_config_render(self, context, instance):
         """
@@ -105,6 +107,7 @@ class SlideshowFragment(template.Node):
 
         return content
 
+
 @register.tag(name="slideshow_render")
 def do_slideshow_render(parser, token):
     """
@@ -119,5 +122,6 @@ def do_slideshow_render(parser, token):
         raise template.TemplateSyntaxError("You need to specify at less a \"Slideshow\" SLUG or INSTANCE")
     else:
         return SlideshowFragment(*args[1:])
+
 
 do_slideshow_render.is_safe = True

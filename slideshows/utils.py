@@ -4,11 +4,12 @@ Utilitaires liés aux champs de fichiers dans les modèles de données
 """
 from datetime import datetime as real_datetime
 from os import makedirs
-from os.path import basename, dirname, exists, isdir, join, splitext
+from os.path import exists, isdir, join, splitext
 
 from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.datetime_safe import strftime
+
 
 def content_file_name(upload_to_path, instance, filename=None, new_extension=None):
     """
@@ -32,6 +33,7 @@ def content_file_name(upload_to_path, instance, filename=None, new_extension=Non
         return upload_to
     filename = get_unique_filename(filename, new_extension=new_extension)
     return '/'.join([upload_to, filename])
+
 
 def get_unique_filename(filename, new_filename=None, new_extension=None):
     """
@@ -69,7 +71,10 @@ def get_unique_filename(filename, new_filename=None, new_extension=None):
     else:
         return '%s.%s' % (new_filename, extension)
 
-def generate_valid_path(filename, path, create_it=True, root_base=settings.MEDIA_ROOT, permissions=settings.FILE_UPLOAD_PERMISSIONS):
+
+def generate_valid_path(filename, path, create_it=True,
+                        root_base=settings.MEDIA_ROOT,
+                        permissions=settings.FILE_UPLOAD_PERMISSIONS):
     """
     Génére le chemin prévu pour un fichier et créé le chemin si besoin
 
@@ -106,9 +111,9 @@ def generate_valid_path(filename, path, create_it=True, root_base=settings.MEDIA
     absolute_path = join(root_base, relative_path)
     # Création du répertoire
     if create_it:
-        if not exists( absolute_path ):
+        if not exists(absolute_path):
             makedirs(absolute_path, permissions)
-        elif not isdir( absolute_path ):
+        elif not isdir(absolute_path):
             # Le chemin existe et n'est pas un répertoire
             raise IOError("'%s' exists and is not a directory." % absolute_path)
 
