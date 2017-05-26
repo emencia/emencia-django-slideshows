@@ -23,10 +23,7 @@ Links
 Require
 =======
 
-* Django >= 1.7;
-
-  - Last release for *Django<1.7* is available on repository branch *django_1-6*;
-  
+* Django >= 1.8;
 * `django-filebrowser-no-grappelli`_ >= 3.5.6;
 
 Optional
@@ -60,7 +57,7 @@ Add it to your installed apps in the settings : ::
     )
 
 If you have installed one of the django app for CKeditor, add it also to your ``settings.INSTALLED_APPS``.
-    
+
 Then add its settings : ::
 
     from porticus.settings import *
@@ -96,7 +93,7 @@ With the template tag
 *********************
 
 Create your slideshow from the admin, feed it with some slides, then use it in your templates : ::
-    
+
     {% load slideshows_tags %}
     ...
     {% slideshow_render 'your-slug' %}
@@ -104,7 +101,7 @@ Create your slideshow from the admin, feed it with some slides, then use it in y
 The first argument accept either a slug string or a Slideshow instance.
 
 Also you can override the content template and the config template saved within the template tag : ::
-    
+
     {% load slideshows_tags %}
     ...
     {% slideshow_render 'your-slug' 'slideshows/slides_show/custom.html' 'slideshows/slides_show/configs/custom.html' %}
