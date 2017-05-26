@@ -11,46 +11,47 @@ from django.utils.safestring import mark_safe
 
 from slideshows.models import Slideshow, DEFAULT_SLIDESHOWS_TEMPLATE, DEFAULT_SLIDESHOWS_RANDOM_SLIDE_TEMPLATE
 
+
 class SlideshowMixin(object):
     """
     Mixin to share some Slideshow display logic
     """
     def get_template_names(self):
         return [self.object.template or DEFAULT_SLIDESHOWS_TEMPLATE]
-    
+
     def get_config_render(self, context, instance):
         """
         Render the slideshow Javascript config using the defined template.
-        
-        If the Slideshow instance has an empty "config" attribute this 
+
+        If the Slideshow instance has an empty "config" attribute this
         will return an empty string.
-        
-        :type instance: ``slideshows.models.Slideshow`` instance object 
+
+        :type instance: ``slideshows.models.Slideshow`` instance object
         :param instance: A slideshow instance
-        
+
         :type context: object ``django.template.Context``
         :param context: Context object
-        
+
         :rtype: string
         :return: HTML for the slideshow's config
         """
         if not instance.config:
             return ""
-        
+
         t = template.loader.get_template(instance.config)
         context['slideshow_instance'] = instance
         content = t.render(template.Context(context))
-        
+
         return content
-    
+
     def get_random_slide(self, queryset):
         """
-        Efficient random select, because "order_by('?')" is knowed as 
+        Efficient random select, because "order_by('?')" is known to be
         slow/painful for some database
-        
+
         :type queryset: Queryset
         :param queryset: Slideshow queryset to start from
-        
+
         :rtype: ``slideshows.models.Slideshow`` instance object
         :return: A random slideshow getted from the given queryset
         """
@@ -59,6 +60,7 @@ class SlideshowMixin(object):
             return []
         random_index = random.randint(0, count - 1)
         return queryset.all()[random_index]
+
 
 class SlideshowView(SlideshowMixin, DetailView):
     model = Slideshow
