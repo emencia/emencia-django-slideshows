@@ -40,7 +40,12 @@ class SlideshowMixin(object):
 
         t = template.loader.get_template(instance.config)
         context['slideshow_instance'] = instance
-        content = t.render(template.Context(context))
+
+        render_context = {}
+        for dict_ in context.dicts:
+            render_context.update(dict_)
+
+        content = t.render(render_context)
 
         return content
 
